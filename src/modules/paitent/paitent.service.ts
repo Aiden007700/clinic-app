@@ -8,27 +8,36 @@ import { Paitent } from './entities/paitent.entity';
 
 @Injectable()
 export class PaitentService {
+  constructor(
+    @InjectRepository(Paitent)
+    private readonly paitentReposetory: Repository<Paitent>,
+    private readonly doctorService: DoctorService,
+  ) {}
 
-  constructor(@InjectRepository(Paitent) private readonly paitentReposetory: Repository<Paitent>,
-  private readonly doctorService: DoctorService) {}
-
-  create(createPaitentDto: CreatePaitentDto) {
-    return 'This action adds a new paitent';
+  async create(createPaitentDto: CreatePaitentDto) {
+    const doctor = await this.doctorService.findOne(createPaitentDto.doctorId);
+    const paitent = await this.paitentReposetory.create(createPaitentDto);
+    paitent.doctor = doctor;
+    return await this.paitentReposetory.save(paitent);
   }
 
-  findAll() {
-    return `This action returns all paitent`;
+  async findAll() {
+    return await this.paitentReposetory.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} paitent`;
+  async findOne(id: number) {
+    return await this.paitentReposetory.findOne({ id });
   }
 
-  update(id: number, updatePaitentDto: UpdatePaitentDto) {
-    return `This action updates a #${id} paitent`;
+  async update(id: number, updatePaitentDto: UpdatePaitentDto) {
+    const _paitent = await this.findOne(id);
+    return await this.paitentReposetory.save({
+      ..._paitent,
+      ...updatePaitentDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} paitent`;
+  async remove(id: number) {
+    return await this.paitentReposetory.delete(id)
   }
 }
