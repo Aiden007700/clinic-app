@@ -9,7 +9,7 @@ import { plainToClass } from 'class-transformer';
 import { map, Observable } from 'rxjs';
 
 export function Serilizer(dto) {
-    return @UseInterceptors(new CoustomeInterceptor(dto))
+    return UseInterceptors(new CoustomeInterceptor(dto))
 }
 
 @Injectable()
