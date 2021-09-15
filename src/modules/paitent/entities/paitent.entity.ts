@@ -1,5 +1,6 @@
+import { Appointment } from "src/modules/appointment/entities/appointment.entity";
 import { Doctor } from "src/modules/doctor/entities/doctor.entity";
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 
 @Entity()
 export class Paitent {
@@ -30,4 +31,7 @@ export class Paitent {
     @ManyToOne(() => Doctor)
     @JoinColumn()
     doctor: Doctor
+
+    @OneToMany(() => Appointment, appointment => appointment.paitent)
+    appointment: Appointment[]
 }

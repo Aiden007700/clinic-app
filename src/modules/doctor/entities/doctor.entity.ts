@@ -1,8 +1,10 @@
+import { Appointment } from 'src/modules/appointment/entities/appointment.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -29,4 +31,7 @@ export class Doctor {
   @ManyToOne(() => Doctor, (doctor) => doctor.id)
   @JoinColumn()
   supervisingDoctor?: Doctor;
+
+  @OneToMany(() => Appointment, appointment => appointment.doctor)
+  appointment: Appointment[]
 }
